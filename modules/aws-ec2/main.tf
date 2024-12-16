@@ -22,11 +22,11 @@ resource "aws_instance" "this" {
     encrypted             = true
     delete_on_termination = true
     tags = merge(var.tags, {
-      Name = format("%s-ebs", local.ec2_name)
+      Name = "${var.instance_name}-ebs"
     })
   }
 
-  tags = merge(var.tags, { Name = local.ec2_name })
+  tags = merge(var.tags, { Name = var.instance_name})
 }
 
 # Elastic IP Allocation
@@ -34,6 +34,6 @@ resource "aws_eip" "this" {
   count    = var.allocate_eip ? 1 : 0
   instance = aws_instance.this.id
   tags = merge(var.tags, {
-    Name = format("%s-%s-eip", var.environment_name, var.instance_name)
+    Name = var.instance_name
   })
 }

@@ -15,14 +15,14 @@ module "vpc" {
   # Nat Gateway
   enable_nat_gateway = true
   single_nat_gateway = true #if true, nat gateway only create one
-#  # Reuse NAT IPs
-#  reuse_nat_ips = false # <= if true, Skip creation of EIPs for the NAT Gateways
+  #  # Reuse NAT IPs
+  #  reuse_nat_ips = false # <= if true, Skip creation of EIPs for the NAT Gateways
   #  external_nat_ip_ids   = [aws_eip.eip-nat.id] #attach eip from manual create eip
   public_subnet_suffix   = "public-subnet"
   private_subnet_suffix  = "private-subnet"
   database_subnet_suffix = "data-subnet"
   #  intra_subnet_suffix = "data-subnet"
-  create_database_subnet_route_table = true //create without route to nat
+  create_database_subnet_route_table = true //created without 0.0.0.0 route to nat
   #Virtual Private Gateway
   #  enable_vpn_gateway = true
 
