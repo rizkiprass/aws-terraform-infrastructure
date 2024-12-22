@@ -9,27 +9,28 @@ variable "secret_key" {
 variable "Backup" {
   default = "BackupDaily"
 }
+
 variable "region" {
-  default = "us-west-2"
+  default = "ap-southeast-3"
 }
 
 variable "cidr" {
   default = "10.10.0.0/16"
 }
 
-variable "Public_Subnet_AZA_1" {
+variable "Public_Subnet_AZA" {
   default = "10.10.1.0/24"
 }
 
-variable "Public_Subnet_AZB_1" {
+variable "Public_Subnet_AZB" {
   default = "10.10.2.0/24"
 }
 
-variable "App_Subnet_AZA" {
+variable "Private_Subnet_AZA" {
   default = "10.10.3.0/24"
 }
 
-variable "App_Subnet_AZB" {
+variable "Private_Subnet_AZB" {
   default = "10.10.4.0/24"
 }
 
