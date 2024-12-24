@@ -164,3 +164,48 @@ resource "aws_vpc_endpoint" "s3" {
 #  subnet_id      = aws_subnet.subnet-app-1a.id
 #  route_table_id = aws_route_table.app-rt.id
 #}
+
+//Create a tgw subnet
+resource "aws_subnet" "subnet-tgw-3a" {
+  vpc_id            = module.vpc.vpc_id
+  cidr_block        = var.TGW_Subnet_AZA
+  availability_zone = format("%sa", var.region)
+
+  tags = merge(local.common_tags,
+    {
+      Name = format("%s-%s-tgw-subnet-3a", var.project, var.environment) //
+  })
+}
+
+resource "aws_subnet" "subnet-tgw-3c" {
+  vpc_id            = module.vpc.vpc_id
+  cidr_block        = var.TGW_Subnet_AZC
+  availability_zone = format("%sc", var.region)
+
+  tags = merge(local.common_tags,
+    {
+      Name = format("%s-%s-tgw-subnet-3c", var.project, var.environment) //
+  })
+}
+
+resource "aws_route_table" "tgw-rt" {
+  vpc_id = module.vpc.vpc_id
+#  route {
+#    cidr_block = "0.0.0.0/0"
+#    gateway_id = module.vpc.natgw_ids[0]
+#  }
+
+  tags = merge(local.common_tags, {
+    Name = format("%s-%s-%s-tgw-rtb", var.customer, var.project, var.environment)
+  })
+}
+
+resource "aws_route_table_association" "rt-subnet-assoc-tgw-3a" {
+  subnet_id      = aws_subnet.subnet-tgw-3a.id
+  route_table_id = aws_route_table.tgw-rt.id
+}
+
+resource "aws_route_table_association" "rt-subnet-assoc-tgw-3c" {
+  subnet_id      = aws_subnet.subnet-tgw-3c.id
+  route_table_id = aws_route_table.tgw-rt.id
+}
