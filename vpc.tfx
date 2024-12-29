@@ -38,6 +38,24 @@ module "vpc" {
   ##    }
   #  }
 
+  //Tagging resource Name
+
+  vpc_tags = {
+    Name = format("%s-%s-%s-VPC", var.customer, var.project, var.environment)
+  }
+
+  public_route_table_tags = {
+    Name = format("%s-%s-%s-public-rtb", var.customer, var.project, var.environment)
+  }
+
+  private_route_table_tags = {
+    Name = format("%s-%s-%s-private-rtb", var.customer, var.project, var.environment)
+  }
+
+  intra_route_table_tags = {
+    Name = format("%s-%s-%s-private-rtb", var.customer, var.project, var.environment)
+  }
+
   nat_gateway_tags = {
     Name = format("%s-%s-%s-nat", var.customer, var.project, var.environment)
   }
@@ -45,6 +63,12 @@ module "vpc" {
   nat_eip_tags = {
     Name = format("%s-%s-%s-nat-eip", var.customer, var.project, var.environment)
   }
+
+  igw_tags = {
+    Name = format("%s-%s-%s-IGW", var.customer, var.project, var.environment)
+  }
+
+  //General Tagging
   tags = local.common_tags
   #    # VPC Flow Logs (Cloudwatch log group and IAM role will be created)
   #    enable_flow_log                      = true
@@ -76,6 +100,11 @@ resource "aws_vpc_endpoint" "s3" {
   tags = merge(local.common_tags, {
     Name = format("%s-%s-%s-s3-gateway-endpoint", var.customer, var.project, var.environment)
   })
+}
+
+resource "aws_vpc_endpoint_route_table_association" "s3" {
+  route_table_id  = module.vpc.xxx.id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
 }
 
 #resource "aws_eip" "eip-nat2-sandbox" {
@@ -173,7 +202,7 @@ resource "aws_subnet" "subnet-tgw-3a" {
 
   tags = merge(local.common_tags,
     {
-      Name = format("%s-%s-tgw-subnet-3a", var.project, var.environment) //
+      Name = format("%s-%s-%s-tgw-subnet-%sa", var.customer, var.project, var.environment, var.region) //
   })
 }
 
@@ -184,7 +213,7 @@ resource "aws_subnet" "subnet-tgw-3c" {
 
   tags = merge(local.common_tags,
     {
-      Name = format("%s-%s-tgw-subnet-3c", var.project, var.environment) //
+      Name = format("%s-%s-%s-tgw-subnet-%sc", var.customer, var.project, var.environment, var.region) //
   })
 }
 
@@ -196,7 +225,7 @@ resource "aws_route_table" "tgw-rt" {
 #  }
 
   tags = merge(local.common_tags, {
-    Name = format("%s-%s-%s-tgw-rtb", var.customer, var.project, var.environment)
+    Name = format("%s-%s-%s-tgw-subnet-RTB", var.customer, var.project, var.environment)
   })
 }
 

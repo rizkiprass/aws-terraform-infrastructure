@@ -4,7 +4,7 @@ data aws_instance "instance-lookup" {
 resource "aws_cloudwatch_metric_alarm" "instance-cpu" {
   alarm_name = format("%s-cpu-above-%s",data.aws_instance.instance-lookup.tags["Name"],var.alarm-threshold)
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods = "2"
+  evaluation_periods = "1"
   threshold = var.alarm-threshold
   alarm_description = "This metric monitors ec2 cpu utilization for instance ${data.aws_instance.instance-lookup.id}"
   alarm_actions = [
@@ -30,7 +30,7 @@ resource "aws_cloudwatch_metric_alarm" "instance-ram" {
   count = var.memory ? 1:0
   alarm_name = format("%s-mem-above-%s",data.aws_instance.instance-lookup.tags["Name"],var.alarm-threshold)
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods = "2"
+  evaluation_periods = "1"
   threshold = var.alarm-threshold
   alarm_description = "This metric monitors ec2 RAM utilization for instance ${data.aws_instance.instance-lookup.id}"
   alarm_actions = [
@@ -58,7 +58,7 @@ resource "aws_cloudwatch_metric_alarm" "linux-instance-disk" {
   count = var.disk ? 1:0
   alarm_name = format("%s-disk-above-%s",data.aws_instance.instance-lookup.tags["Name"],var.alarm-threshold)
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods = "2"
+  evaluation_periods = "1"
   threshold = var.alarm-threshold
   alarm_description = "This metric monitors ec2 Disk utilization (device nvme0n1p1) for instance ${data.aws_instance.instance-lookup.id} on partition ${var.disk-partition}"
   alarm_actions = [
